@@ -1,18 +1,28 @@
 package com.masai.models;
 
+
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.*;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Seller {
@@ -33,13 +43,18 @@ public class Seller {
 	
 	@NotNull(message="Please enter your mobile Number")
 	@Pattern(regexp="[6789]{1}[0-9]{9}", message="Enter a valid Mobile Number")
+	@Column(unique = true)
 	private String mobile;
+	
+	
 	@Email
+	@Column(unique = true)
 	private String emailId;
 	
-	
-	
-	
+
+	@OneToMany
+	@JsonIgnore
+	private List<Product> product;
 	
 
 }

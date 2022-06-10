@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.masai.models.Address;
+import com.masai.models.CreditCard;
 import com.masai.models.Customer;
 import com.masai.models.CustomerDTO;
 import com.masai.models.CustomerUpdateDTO;
+import com.masai.models.Order;
 import com.masai.models.SessionDTO;
 import com.masai.service.CustomerService;
 
@@ -73,6 +75,13 @@ public class CustomerController {
 	}
 	
 	
+	// Handler to update Credit card details
+	@PutMapping("/customer/update/card")
+	public ResponseEntity<Customer> updateCreditCardHandler(@RequestHeader("token") String token, @Valid @RequestBody CreditCard newCard){
+		return new ResponseEntity<>(customerService.updateCreditCardDetails(token, newCard), HttpStatus.ACCEPTED);
+	}
+	
+	
 	// Handler to Remove a user address
 	@DeleteMapping("/customer/delete/address")
 	public ResponseEntity<Customer> deleteAddressHandler(@RequestParam("type") String type, @RequestHeader("token") String token){
@@ -83,5 +92,12 @@ public class CustomerController {
 	@DeleteMapping("/customer")
 	public ResponseEntity<SessionDTO> deleteCustomerHandler(@Valid @RequestBody CustomerDTO customerDto, @RequestHeader("token") String token){
 		return new ResponseEntity<>(customerService.deleteCustomer(customerDto, token), HttpStatus.ACCEPTED);
+	}
+	
+	
+	
+	@GetMapping("/customer/orders")
+	public ResponseEntity<List<Order>> getCustomerOrdersHandler(@RequestHeader("token") String token){
+		return new ResponseEntity<>(customerService.getCustomerOrders(token), HttpStatus.ACCEPTED);
 	}
 }
